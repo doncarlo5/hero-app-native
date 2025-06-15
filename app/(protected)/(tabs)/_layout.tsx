@@ -10,7 +10,14 @@ export default function TabsLayout() {
 	return (
 		<Tabs
 			screenOptions={{
-				headerShown: false,
+				headerShown: true,
+				headerStyle: {
+					backgroundColor:
+						colorScheme === "dark"
+							? colors.dark.background
+							: colors.light.background,
+				},
+				headerTintColor: colors.light.foreground,
 				tabBarStyle: {
 					backgroundColor:
 						colorScheme === "dark"
@@ -26,6 +33,7 @@ export default function TabsLayout() {
 		>
 			<Tabs.Screen name="index" options={{ title: "Home" }} />
 			<Tabs.Screen name="settings" options={{ title: "Settings" }} />
+			<Tabs.Screen name="list" options={{ title: "Mes séances" }} />
 		</Tabs>
 	);
 }
