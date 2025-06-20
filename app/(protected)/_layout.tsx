@@ -1,6 +1,8 @@
 import { Redirect, Stack } from "expo-router";
 
 import { useAuth } from "@/context/supabase-provider";
+import { colors } from "@/constants/colors";
+import { useColorScheme } from "@/lib/useColorScheme";
 
 export const unstable_settings = {
 	initialRouteName: "(tabs)",
@@ -8,6 +10,7 @@ export const unstable_settings = {
 
 export default function ProtectedLayout() {
 	const { initialized, session } = useAuth();
+	const { colorScheme } = useColorScheme();
 
 	if (!initialized) {
 		return null;
@@ -25,6 +28,24 @@ export default function ProtectedLayout() {
 		>
 			<Stack.Screen name="(tabs)" />
 			<Stack.Screen name="modal" options={{ presentation: "modal" }} />
+			<Stack.Screen
+				name="session/[id]"
+				options={{
+					headerStyle: {
+						backgroundColor:
+							colorScheme === "dark"
+								? colors.dark.background
+								: colors.light.background,
+					},
+					headerTintColor:
+						colorScheme === "dark"
+							? colors.dark.foreground
+							: colors.light.foreground,
+					presentation: "card",
+					headerShown: true,
+					headerTitle: "Session",
+				}}
+			/>
 		</Stack>
 	);
 }

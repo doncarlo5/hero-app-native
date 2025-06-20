@@ -17,7 +17,10 @@ export default function TabsLayout() {
 							? colors.dark.background
 							: colors.light.background,
 				},
-				headerTintColor: colors.light.foreground,
+				headerTintColor:
+					colorScheme === "dark"
+						? colors.dark.foreground
+						: colors.light.foreground,
 				tabBarStyle: {
 					backgroundColor:
 						colorScheme === "dark"
