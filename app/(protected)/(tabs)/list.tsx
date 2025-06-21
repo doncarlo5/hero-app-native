@@ -43,8 +43,6 @@ export default function List() {
 		router.push(`/session/${sessionId}`);
 	};
 
-	console.log("sessions", sessions);
-
 	return (
 		<View className="flex-1 items-center justify-center bg-background dark:bg-background-dark p-4 w-full gap-y-4">
 			{isLoadingSessions ? (
