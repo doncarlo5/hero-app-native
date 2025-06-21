@@ -9,7 +9,6 @@ const getAuthHeaders = async () => {
 		const raw = await AsyncStorage.getItem(
 			"sb-qmhziwpyeqpwllseache-auth-token",
 		);
-		console.log("raw", raw);
 		if (raw) token = JSON.parse(raw);
 	} catch (error) {
 		console.error("Error parsing token", error);
