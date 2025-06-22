@@ -46,6 +46,24 @@ export default function ProtectedLayout() {
 					headerTitle: "Session",
 				}}
 			/>
+			<Stack.Screen
+				name="exercise/[id]"
+				options={{
+					headerStyle: {
+						backgroundColor:
+							colorScheme === "dark"
+								? colors.dark.background
+								: colors.light.background,
+					},
+					headerTintColor:
+						colorScheme === "dark"
+							? colors.dark.foreground
+							: colors.light.foreground,
+					presentation: "card",
+					headerShown: true,
+					headerTitle: "Exercise",
+				}}
+			/>
 		</Stack>
 	);
 }
