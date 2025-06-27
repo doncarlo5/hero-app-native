@@ -4,7 +4,6 @@ import {
 	FlatList,
 	RefreshControl,
 	ActivityIndicator,
-	TextInput,
 	Pressable,
 	Alert,
 	Modal,
@@ -24,10 +23,8 @@ import {
 	CalendarIcon,
 	SaveIcon,
 	TrashIcon,
-	CheckCircleIcon,
-	ArrowLeftIcon,
-	InfoIcon,
 	XIcon,
+	CheckCircleIcon,
 } from "lucide-react-native";
 
 type ExerciseUser = {
@@ -110,7 +107,7 @@ export default function SessionDetail() {
 			setSession(response);
 
 			const newFormState = {
-				body_weight: response.body_weight,
+				body_weight: String(response.body_weight || ""),
 				comment: response.comment ?? "",
 				date_session: response.date_session,
 			};
@@ -157,6 +154,7 @@ export default function SessionDetail() {
 
 			// Update original state after successful save
 			setOriginalFormState(formState);
+			console.log("formState", formState);
 			await fetchSession(); // Refresh data
 		} catch (error) {
 			console.error("Save session error:", error);
@@ -437,7 +435,7 @@ export default function SessionDetail() {
 							Body Weight (kg)
 						</Text>
 						<Input
-							value={formState.body_weight}
+							value={formState.body_weight || ""}
 							onChangeText={(text) =>
 								setFormState((prev) => ({ ...prev, body_weight: text }))
 							}
@@ -468,34 +466,6 @@ export default function SessionDetail() {
 					</View>
 				</View>
 
-				{/* Action Buttons */}
-				<View className="flex-row gap-2 mb-6">
-					<Button
-						variant="outline"
-						onPress={handleDeleteSession}
-						disabled={isDeleting}
-						className="flex-1"
-					>
-						<TrashIcon size={16} color="#ef4444" />
-						<Text className="ml-2 text-red-500">
-							{isDeleting ? "Deleting..." : "Delete"}
-						</Text>
-					</Button>
-
-					{!session.is_done && (
-						<Button
-							onPress={handleCompleteSession}
-							disabled={isCompleting}
-							className="flex-1"
-						>
-							<CheckCircleIcon size={16} color="white" />
-							<Text className="ml-2 text-white">
-								{isCompleting ? "Completing..." : "Complete"}
-							</Text>
-						</Button>
-					)}
-				</View>
-
 				{/* EXERCISES */}
 				<View>
 					<View className="flex-row items-center justify-between mb-6">
@@ -519,7 +489,7 @@ export default function SessionDetail() {
 								className="mb-4 overflow-hidden rounded-xl bg-background dark:bg-background-dark shadow-sm border border-muted/20 dark:border-muted-dark/20"
 							>
 								{/* Exercise Header */}
-								<View className="flex-row items-center justify-between mb-3 p-4">
+								<View className="flex-row items-center justify-between mb-3 ">
 									<View className="flex-1">
 										<Text className="font-bold text-lg text-foreground dark:text-foreground-dark">
 											{item.type.name}
@@ -528,7 +498,7 @@ export default function SessionDetail() {
 									<ChevronRightIcon size={20} color="#6b7280" />
 								</View>
 
-								<View className="mb-3 px-4">
+								<View className="mb-3">
 									<View className="flex-row gap-2 w-full">
 										{item.rep.map((rep, index) => {
 											// Only show sets with actual data
@@ -555,7 +525,7 @@ export default function SessionDetail() {
 								</View>
 
 								{item.comment && (
-									<View className="bg-muted/20 dark:bg-muted-dark/20 rounded-lg p-3 mx-4 mb-4">
+									<View className="bg-muted/20 dark:bg-muted-dark/20 rounded-lg mb-4">
 										<Text className="text-sm text-foreground dark:text-foreground-dark">
 											{item.comment}
 										</Text>
@@ -566,11 +536,39 @@ export default function SessionDetail() {
 						scrollEnabled={false}
 					/>
 				</View>
+
+				{/* Bottom Action Buttons */}
+				<View className="flex-row gap-2 mb-6">
+					<Button
+						variant="outline"
+						onPress={handleDeleteSession}
+						disabled={isDeleting}
+						className="flex-1 flex-row items-center justify-center dark:bg-background-dark dark:text-foreground-dark"
+					>
+						<TrashIcon size={16} color="#ef4444" />
+						<Text className="ml-2 text-red-500">
+							{isDeleting ? "Deleting..." : "Delete"}
+						</Text>
+					</Button>
+
+					{!session.is_done && (
+						<Button
+							onPress={handleCompleteSession}
+							disabled={isCompleting}
+							className="flex-1 dark:bg-transparent flex-row items-center justify-center dark:bg-background-dark dark:text-foreground-dark"
+						>
+							<CheckCircleIcon size={16} color="white" />
+							<Text className="ml-2">
+								{isCompleting ? "Completing..." : "Complete"}
+							</Text>
+						</Button>
+					)}
+				</View>
 			</ScrollView>
 
 			{/* Floating Save Button */}
 			{hasChanges() && (
-				<View className="absolute bottom-6 right-6">
+				<View className="absolute bottom-10 right-10">
 					<Pressable
 						onPress={handleSave}
 						disabled={isSaving}

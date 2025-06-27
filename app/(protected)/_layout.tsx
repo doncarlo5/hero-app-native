@@ -64,6 +64,13 @@ export default function ProtectedLayout() {
 					headerTitle: "Exercise",
 				}}
 			/>
+			<Stack.Screen
+				name="do-exercise"
+				options={{
+					presentation: "card",
+					headerShown: false,
+				}}
+			/>
 		</Stack>
 	);
 }

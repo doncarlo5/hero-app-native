@@ -12,8 +12,15 @@ import { useEffect, useState } from "react";
 import { Text } from "@/components/ui/text";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/api-handler";
-import { InfoIcon } from "lucide-react-native";
+import {
+	InfoIcon,
+	TrashIcon,
+	EditIcon,
+	XIcon,
+	CheckIcon,
+} from "lucide-react-native";
 
 type ExerciseUser = {
 	_id: string;
@@ -583,26 +590,28 @@ export default function ExerciseDetail() {
 			</View>
 
 			{/* Action Buttons */}
-			<View className="flex-row space-x-3 mb-6">
-				<TouchableOpacity
+			<View className="flex-row gap-2 mb-6">
+				<Button
+					variant="outline"
 					onPress={handleDelete}
-					className="flex-1 bg-red-500 rounded-lg p-3"
+					className="flex-1 flex-row items-center justify-center dark:bg-background-dark dark:text-foreground-dark"
 				>
-					<Text className="text-center text-white font-medium">Delete</Text>
-				</TouchableOpacity>
+					<TrashIcon size={16} color="#ef4444" />
+					<Text className="ml-2 text-red-500">Delete</Text>
+				</Button>
 
 				{!isEditable ? (
-					<TouchableOpacity
+					<Button
 						onPress={() => setIsEditable(true)}
-						className="flex-1 bg-primary rounded-lg p-3"
+						className="flex-1 dark:bg-transparent flex-row items-center justify-center dark:bg-background-dark dark:text-foreground-dark"
 					>
-						<Text className="text-center text-primary-foreground font-medium">
-							Edit
-						</Text>
-					</TouchableOpacity>
+						<EditIcon size={16} color="white" />
+						<Text className="ml-2">Edit</Text>
+					</Button>
 				) : (
-					<View className="flex-1 flex-row space-x-2">
-						<TouchableOpacity
+					<View className="flex-1 flex-row gap-2">
+						<Button
+							variant="outline"
 							onPress={() => {
 								setIsEditable(false);
 								// Reset form state
@@ -620,21 +629,26 @@ export default function ExerciseDetail() {
 								setIsRep4(Boolean(exercise.rep[3] && exercise.rep[3] > 0));
 								setSelectedExerciseType(exercise.type);
 							}}
-							className="flex-1 bg-muted rounded-lg p-3"
+							disabled={isSaving}
+							className="flex-1 flex-row items-center justify-center dark:bg-background-dark dark:text-foreground-dark"
 						>
-							<Text className="text-center text-foreground dark:text-foreground-dark font-medium">
+							<XIcon size={16} color="#6b7280" />
+							<Text className="ml-2 text-muted-foreground dark:text-muted-foreground-dark">
 								Cancel
 							</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
+						</Button>
+						<Button
 							onPress={handleSave}
 							disabled={isSaving}
-							className="flex-1 bg-primary rounded-lg p-3"
+							className="flex-1 dark:bg-transparent flex-row items-center justify-center dark:bg-background-dark dark:text-foreground-dark"
 						>
-							<Text className="text-center text-primary-foreground font-medium">
-								{isSaving ? "Saving..." : "Save"}
-							</Text>
-						</TouchableOpacity>
+							{isSaving ? (
+								<ActivityIndicator size="small" color="white" />
+							) : (
+								<CheckIcon size={16} color="white" />
+							)}
+							<Text className="ml-2">{isSaving ? "Saving..." : "Save"}</Text>
+						</Button>
 					</View>
 				)}
 			</View>
